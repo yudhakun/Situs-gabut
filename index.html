@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YUDHA SENPAI EDITZ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #0a0a0a;
+            text-align: center;
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Matrix rain animation */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+            font-size: 36px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(0, 123, 255, 0.8);
+            position: relative;
+        }
+
+        .author {
+            color: #007bff;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: -10px;
+            animation: fadeIn 3s ease-in-out;
+            text-shadow: 0 0 10px rgba(0, 123, 255, 0.8);
+        }
+
+        /* New addition: X DKV A text */
+        .x-dkva {
+            color: #007bff;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: transparent;
+            color: #007bff;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 123, 255, 0.5), transparent);
+            transition: left 0.3s ease;
+            animation: glowing 2s infinite;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        @keyframes glowing {
+            0% {
+                left: -100%;
+            }
+            50% {
+                left: 0%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        button:hover {
+            background-color: #007bff;
+            color: #0a0a0a;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 123, 255, 1);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        #quote {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+            text-shadow: 0 0 5px rgba(0, 123, 255, 0.7);
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 36px;
+            font-weight: bold;
+            color: #007bff;
+            opacity: 0;
+            transform: scale(0);
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            text-shadow: 0 0 10px rgba(0, 123, 255, 0.8);
+        }
+
+        #message.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body>
+    <h1>YUDHA SENPAI EDITZ</h1>
+    <div class="author">BY: Yudha Febriyansah</div>
+    <!-- New addition: X DKV A text -->
+    <div class="x-dkva">X DKV A</div>
+
+    <button onclick="showQuote()">Kata Kata Hari Ini</button>
+
+    <a href="https://wa.me/6289512850395" target="_blank">
+        <button>Hubungi Saya</button>
+    </a>
+
+    <a href="https://youtube.com/@yudhasenpaieditz?si=QwKAWKr6JtVGOqO-" target="_blank">
+        <button>Channel YouTube Saya</button>
+    </a>
+
+    <button onclick="showMessage()">Cek Jodoh</button>
+
+    <div id="quote"></div>
+    <div id="message">SELAMAT ANDA GAY</div>
+
+    <canvas id="matrix"></canvas>
+
+    <script>
+        function showQuote() {
+            const quotes = [
+                "Fisik bisa di ubah, Materi bisa dicari, tapi yang setia tidak bisa datang keduakali, menyala wih agus nih bos.",
+                "Setiap hari adalah peluang baru untuk belajar.",
+                "Jangan takut untuk mencoba hal baru.",
+                "Kerja keras akan membuahkan hasil.",
+                "Percayalah pada dirimu sendiri.",
+                "Bersyukur adalah kunci kebahagiaan.",
+                "Kegagalan adalah awal dari kesuksesan.",
+                "Hidup adalah perjalanan, nikmati setiap langkahnya.",
+                "Berani bermimpi, berani berusaha.",
+                "Waktu adalah aset yang paling berharga.",
+                "Hargai orang-orang di sekitarmu.",
+                "Setiap hari adalah kesempatan baru.",
+                "Kejujuran adalah fondasi dari kepercayaan.",
+                "Cintai dirimu sendiri sebelum mencintai orang lain.",
+                "Belajar dari kesalahan adalah tanda kedewasaan.",
+                "Ketulusan akan membawa kedamaian.",
+                "Jangan pernah menyerah pada impianmu.",
+                "Kesabaran adalah kekuatan terbesar.",
+                "Hidup ini singkat, jangan sia-siakan.",
+                "Jadilah versi terbaik dari dirimu.",
+                "Kebaikan kecil bisa membuat perbedaan besar.",
+                "Fokus pada solusi, bukan masalah.",
+                "Setiap orang punya potensi untuk sukses.",
+                "Keberanian adalah langkah pertama menuju perubahan.",
+                "Selalu ada cahaya setelah kegelapan."
+            ];
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('quote').textContent = randomQuote;
+        }
+
+        function showMessage() {
+            const message = document.getElementById('message');
+            message.classList.add('show');
+            setTimeout(() => {
+                message.classList.remove('show');
+            }, 5000); // Remove after 5 seconds
+        }
+
+        // Matrix rain effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array.from({ length: Math.floor(columns) }, () => Math.random() * canvas.height / fontSize);
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff00';
+            ctx.font = `${fontSize}px monospace`;
+
+            drops.forEach((y, i) => {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                const x = i * fontSize;
+                ctx.fillText(text, x, y * fontSize);
+
+                if (y * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0; // Reset to top when reaching bottom with randomness
+                } else {
+                    drops[i] += 1 + Math.random(); // Add randomness to speed
+                }
+            });
+        }
+
+        setTimeout(() => {
+            setInterval(draw, 50);
+        }, 0); // Start all drops together
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
